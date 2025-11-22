@@ -61,15 +61,15 @@ ISR(TIMER0_COMPA_vect, ISR_BLOCK)
 #endif
 
 #if defined (HAS_IRTX) || defined (HAS_IRRX)
-  // if IRRX is compiled in, timer runs 125x faster ... 
-  if (++ir_ticks<125) 
+  // if IRRX is compiled in, timer runs 125x faster ...
+  if (++ir_ticks<125)
     return;
-    
+
   ir_ticks = 0;
 #endif
 
   // 125Hz
-  ticks++; 
+  ticks++;
   clock_hsec++;
 
 #ifdef HAS_NTP
@@ -106,7 +106,7 @@ get_timestamp(uint32_t *ts)
   *ts = ticks;
 #else
   uint8_t l = SREG;
-  cli(); 
+  cli();
   *ts = ticks;
   SREG = l;
 #endif
@@ -201,7 +201,7 @@ Minute_Task(void)
 #endif
 
   if (credit_10ms < MAX_CREDIT) // 10ms/1s == 1% -> allowed talk-time without CD
-    credit_10ms += 1;
+    credit_10ms=MAX_CREDIT;// cheating!!! -original war:  credit_10ms += 1;
 
 #ifdef HAS_ONEWIRE
   // if HMS Emulation is on, check the HMS timer
